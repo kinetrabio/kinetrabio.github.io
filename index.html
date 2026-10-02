@@ -25,6 +25,7 @@
       --critical:#EF4444;
     }
     *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
     html,body{margin:0;padding:0;}
     body{
       background:var(--ground);
@@ -39,11 +40,12 @@
     .serif{font-family:"Source Serif 4",Georgia,serif;}
     .wrap{max-width:1040px;margin:0 auto;}
 
-    header{padding-block:22px 30px;}
+    header{padding-block:22px 30px;position:sticky;top:0;z-index:100;background:var(--ground);}
     .nav{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--line);}
-    .wordmark{font-weight:700;font-size:18px;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px;}
-    .wordmark .dot{color:var(--gold);}
-    .nav-links{display:flex;gap:26px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+    .wordmark{font-weight:700;font-size:18px;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px;color:var(--ink);}
+    .nav-links{display:flex;gap:26px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;}
+    .nav-links a{color:var(--muted);transition:color .15s;}
+    .nav-links a:hover{color:var(--ink);}
     @media (max-width:640px){ .nav-links{display:none;} }
 
     .hero{padding-block:56px 40px;max-width:680px;}
@@ -53,10 +55,13 @@
     .sub{font-family:"Source Serif 4",Georgia,serif;font-size:19px;line-height:1.62;color:var(--ink-soft);margin:0 0 32px;max-width:600px;}
     .sub b{color:var(--gold);font-weight:500;}
     .cta-row{display:flex;gap:12px;flex-wrap:wrap;}
-    .btn{font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:4px;display:inline-block;}
+    .btn{font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:4px;display:inline-block;transition:opacity .15s;}
+    .btn:hover{opacity:.85;}
     .btn-primary{background:var(--gold);color:var(--ground);}
     .btn-secondary{background:transparent;color:var(--gold);border:1px solid var(--gold-soft);}
 
+    /* console */
+    #platform{scroll-margin-top:80px;}
     .console{background:var(--screen);border:1px solid var(--line);border-radius:12px;padding:22px 22px 6px;margin-bottom:64px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6);}
     .console-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;flex-wrap:wrap;gap:10px;}
     .console-title{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
@@ -65,15 +70,44 @@
     .live-dot{width:7px;height:7px;border-radius:50%;background:var(--live);animation:pulse 2.2s ease-in-out infinite;}
     @media (prefers-reduced-motion:reduce){ .live-dot{animation:none;} }
     @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
-    .chart-wrap{width:100%;}
+    .chart-wrap{width:100%;position:relative;}
     svg{display:block;width:100%;height:auto;}
     .axis-label{font-family:"IBM Plex Mono",monospace;font-size:13px;fill:var(--muted);}
     .legend-label{font-family:"IBM Plex Mono",monospace;font-size:13px;fill:var(--ink-soft);}
     .anno{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;paint-order:stroke;stroke:var(--screen);stroke-width:6px;stroke-linejoin:round;}
 
+    /* module tabs */
+    #modules{scroll-margin-top:80px;}
     .module-row{display:flex;gap:2px;flex-wrap:wrap;padding:16px 0 14px;border-top:1px solid var(--line-soft);margin-top:4px;}
-    .module{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);padding:6px 12px;border-bottom:2px solid transparent;}
-    .module.active{color:var(--gold);border-bottom-color:var(--gold);}
+    .module{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);padding:6px 12px;border-bottom:2px solid transparent;cursor:pointer;border:none;background:none;transition:color .15s;}
+    .module:hover{color:var(--ink-soft);}
+    .module.active{color:var(--gold);border-bottom:2px solid var(--gold);}
+
+    /* module detail */
+    .module-detail{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px 28px;margin-bottom:64px;display:none;}
+    .module-detail.visible{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
+    .module-detail .md-col{padding:0 24px;border-left:1px solid var(--line);}
+    .module-detail .md-col:first-child{padding-left:0;border-left:none;}
+    .module-detail h4{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;color:var(--muted);margin:0 0 8px;}
+    .module-detail p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;}
+    .module-detail .status{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;margin-bottom:10px;}
+    .status-validated{background:rgba(0,168,120,.15);color:var(--gold);}
+    .status-partial{background:rgba(234,179,8,.1);color:var(--risk);}
+    @media (max-width:760px){
+      .module-detail.visible{grid-template-columns:1fr;}
+      .module-detail .md-col{border-left:none;border-top:1px solid var(--line);padding:16px 0 0;}
+      .module-detail .md-col:first-child{border-top:none;padding-top:0;}
+    }
+
+    /* how it works */
+    #how{scroll-margin-top:80px;}
+    .how{padding-block:8px 60px;}
+    .how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:24px;}
+    .how-step{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px;}
+    .how-step .step-num{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--gold);margin:0 0 12px;letter-spacing:.06em;}
+    .how-step h3{font-family:"IBM Plex Sans",sans-serif;font-size:15px;font-weight:600;color:var(--ink);margin:0 0 10px;line-height:1.3;}
+    .how-step p{font-size:14px;line-height:1.6;color:var(--muted);margin:0;}
+    @media (max-width:760px){.how-steps{grid-template-columns:1fr;}}
 
     .section-label{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 16px;}
     .what{padding-block:8px 60px;max-width:660px;}
@@ -90,6 +124,17 @@
       .spec:first-child{border-top:none;padding-top:0;}
     }
 
+    /* company */
+    #company{scroll-margin-top:80px;}
+    .company{border-top:1px solid var(--line);padding-block:44px 60px;display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap;}
+    .company-about{flex:1;min-width:260px;}
+    .company-about p{font-family:"Source Serif 4",Georgia,serif;font-size:16px;line-height:1.7;color:var(--ink-soft);margin:0 0 20px;}
+    .company-contact{flex:0 0 240px;}
+    .company-contact h4{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;}
+    .contact-link{display:block;font-family:"IBM Plex Sans",sans-serif;font-size:14px;color:var(--gold);padding:10px 0;border-bottom:1px solid var(--line-soft);transition:color .15s;}
+    .contact-link:hover{color:var(--ink);}
+    .contact-link span{display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+
     footer{border-top:1px solid var(--line);padding-block:26px 50px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);text-align:center;}
   </style>
 </head>
@@ -100,7 +145,12 @@
     <header>
       <div class="nav">
         <div class="wordmark">KINETRA BIO</div>
-        <div class="nav-links"><span>Platform</span><span>Modules</span><span>Company</span></div>
+        <div class="nav-links">
+          <a href="#platform">Platform</a>
+          <a href="#modules">Modules</a>
+          <a href="#how">How it works</a>
+          <a href="#company">Company</a>
+        </div>
       </div>
     </header>
 
@@ -114,22 +164,19 @@
       </div>
     </div>
 
-    <div class="console">
+    <div id="platform" class="console">
       <div class="console-head">
-        <div class="console-title">TRAJECTORY MONITOR &mdash; <b>CHO Fed-Batch</b></div>
+        <div class="console-title">TRAJECTORY MONITOR &mdash; <b id="console-run-label">CHO Fed-Batch</b></div>
         <div class="live-status"><span class="live-dot"></span>Monitoring</div>
       </div>
       <div class="chart-wrap">
-        <svg viewBox="0 0 900 300" role="img" aria-label="Illustrative trajectory chart comparing a reference batch against a live CHO fed-batch run that diverges at hour 84">
+        <svg id="chart-svg" viewBox="0 0 900 300" role="img" aria-label="Illustrative trajectory chart">
           <line x1="60" y1="16" x2="80" y2="16" stroke="var(--gold)" stroke-width="2"></line>
           <text x="86" y="20" class="legend-label">Reference batch</text>
           <line x1="270" y1="16" x2="290" y2="16" stroke="var(--live)" stroke-width="2"></line>
           <text x="296" y="20" class="legend-label">Live run</text>
-
-          <path d="M60,118 L125,121 L190,116 L255,123 L320,118 L385,121 L450,125 L515,118 L580,123 L645,121 L710,125 L775,123 L840,121
-                   L840,149 L775,151 L710,153 L645,149 L580,151 L515,146 L450,153 L385,149 L320,146 L255,151 L190,144 L125,149 L60,146 Z"
+          <path id="conf-band" d="M60,118 L125,121 L190,116 L255,123 L320,118 L385,121 L450,125 L515,118 L580,123 L645,121 L710,125 L775,123 L840,121 L840,149 L775,151 L710,153 L645,149 L580,151 L515,146 L450,153 L385,149 L320,146 L255,151 L190,144 L125,149 L60,146 Z"
                 fill="var(--gold)" opacity="0.12" stroke="none"></path>
-
           <line x1="60" y1="260" x2="840" y2="260" stroke="var(--line)" stroke-width="1"></line>
           <g stroke="var(--line)" stroke-width="1">
             <line x1="60" y1="260" x2="60" y2="266"></line>
@@ -139,7 +186,7 @@
             <line x1="684" y1="260" x2="684" y2="266"></line>
             <line x1="840" y1="260" x2="840" y2="266"></line>
           </g>
-          <g class="axis-label" text-anchor="middle">
+          <g id="axis-labels" class="axis-label" text-anchor="middle">
             <text x="60" y="280">0h</text>
             <text x="216" y="280">24h</text>
             <text x="372" y="280">48h</text>
@@ -147,40 +194,76 @@
             <text x="684" y="280">96h</text>
             <text x="840" y="280">120h</text>
           </g>
-
-          <polyline points="60,132 125,135 190,130 255,137 320,132 385,135 450,139 515,132 580,137 645,135 710,139 775,137 840,135"
+          <polyline id="ref-line" points="60,132 125,135 190,130 255,137 320,132 385,135 450,139 515,132 580,137 645,135 710,139 775,137 840,135"
                     fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
-
-          <polyline points="60,132 125,135 190,130 255,137 320,132 385,135 450,139 515,132 580,137 606,145 645,158 710,178 775,205 840,238"
+          <polyline id="live-line" points="60,132 125,135 190,130 255,137 320,132 385,135 450,139 515,132 580,137 606,145 645,158 710,178 775,205 840,238"
                     fill="none" stroke="var(--live)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
-
-          <line x1="606" y1="145" x2="606" y2="260" stroke="var(--risk)" stroke-width="1" stroke-dasharray="3,4" opacity="0.6"></line>
-          <circle cx="606" cy="145" r="4.5" fill="var(--risk)" stroke="var(--screen)" stroke-width="2"></circle>
-          <text x="614" y="120" class="anno" fill="var(--risk)">h84 &mdash; divergence flagged</text>
-
-          <circle cx="840" cy="238" r="4.5" fill="var(--critical)" stroke="var(--screen)" stroke-width="2"></circle>
-          <text x="832" y="228" class="anno" fill="var(--critical)" text-anchor="end">h120 &mdash; critical</text>
+          <line id="flag-line" x1="606" y1="145" x2="606" y2="260" stroke="var(--risk)" stroke-width="1" stroke-dasharray="3,4" opacity="0.6"></line>
+          <circle id="flag-dot" cx="606" cy="145" r="4.5" fill="var(--risk)" stroke="var(--screen)" stroke-width="2"></circle>
+          <text id="flag-label" x="614" y="120" class="anno" fill="var(--risk)">h84 &mdash; divergence flagged</text>
+          <circle id="end-dot" cx="840" cy="238" r="4.5" fill="var(--critical)" stroke="var(--screen)" stroke-width="2"></circle>
+          <text id="end-label" x="832" y="228" class="anno" fill="var(--critical)" text-anchor="end">h120 &mdash; critical</text>
         </svg>
       </div>
-      <div class="module-row">
-        <span class="module active">CHO</span>
-        <span class="module">E. COLI</span>
-        <span class="module">BACILLUS</span>
-        <span class="module">YEAST</span>
-        <span class="module">ANAEROBIC</span>
-        <span class="module">PICHIA</span>
+      <div id="modules" class="module-row">
+        <button class="module active" data-mod="cho">CHO</button>
+        <button class="module" data-mod="ecoli">E. COLI</button>
+        <button class="module" data-mod="bacillus">BACILLUS</button>
+        <button class="module" data-mod="yeast">YEAST</button>
+        <button class="module" data-mod="anaerobic">ANAEROBIC</button>
+        <button class="module" data-mod="pichia">PICHIA</button>
+      </div>
+    </div>
+
+    <div id="module-detail" class="module-detail visible">
+      <div class="md-col">
+        <h4>Module</h4>
+        <span id="md-status" class="status status-validated">Validated</span>
+        <p id="md-desc">CHO Fed-Batch — the most common mammalian expression system. Reference batch validated against mAb production runs. Detection windows tuned for dissolved oxygen sag, pH excursion, and glucose depletion trajectories characteristic of exponential-to-stationary transition.</p>
+      </div>
+      <div class="md-col">
+        <h4>Typical run length</h4>
+        <p id="md-duration">10-14 days (240-336 h). Chart shows a representative 120 h window.</p>
+        <br>
+        <h4>CPPs monitored</h4>
+        <p id="md-cpps">DO, pH, temperature, glucose, lactate, glutamine, osmolality, agitation, gassing rate.</p>
+      </div>
+      <div class="md-col">
+        <h4>Flag logic</h4>
+        <p id="md-flag">Trajectory scored every 30 min against the reference envelope. First flag at h84 on DO sag and glucose slope deviation -- 36 h before the run would have crossed a hard spec limit.</p>
       </div>
     </div>
 
     <div class="what">
       <p class="section-label">What it does</p>
-      <p>Most process monitoring tools score against a fixed spec limit or a historical average &mdash; useful, but blind to how a specific run is actually trending. Kinetra scores against a reference batch: one validated run you choose as the reference, compared continuously against the live run in real time. When a parameter starts drifting from that trajectory, Kinetra surfaces the evidence &mdash; which parameters, how far, how fast &mdash; before it becomes a deviation report.</p>
+      <p>Most process monitoring tools score against a fixed spec limit or a historical average -- useful, but blind to how a specific run is actually trending. Kinetra scores against a reference batch: one validated run you choose as the reference, compared continuously against the live run in real time. When a parameter starts drifting from that trajectory, Kinetra surfaces the evidence -- which parameters, how far, how fast -- before it becomes a deviation report.</p>
+    </div>
+
+    <div id="how" class="how">
+      <p class="section-label">How it works</p>
+      <div class="how-steps">
+        <div class="how-step">
+          <p class="step-num">01 -- CONNECT</p>
+          <h3>Pull from your existing historian</h3>
+          <p>Kinetra reads directly from your OSIsoft PI, Aveva, or DeltaV historian -- or from your PAT data streams. No new sensors, no new hardware, no custom OPC-UA build required.</p>
+        </div>
+        <div class="how-step">
+          <p class="step-num">02 -- SCORE</p>
+          <h3>Score every parameter every 30 minutes</h3>
+          <p>Each CPP trajectory is compared to its position on the validated reference batch at the same elapsed time. The engine measures how far, how fast, and in which direction -- not just whether it crossed a limit.</p>
+        </div>
+        <div class="how-step">
+          <p class="step-num">03 -- FLAG</p>
+          <h3>Surface evidence, not just alerts</h3>
+          <p>When drift exceeds the reference envelope, Kinetra flags it with the specific parameters driving it, the magnitude, and the rate of change -- so your MSAT team can investigate and intervene before it hits the batch record.</p>
+        </div>
+      </div>
     </div>
 
     <div class="specs">
       <div class="spec">
         <h3>Real-time, not retrospective</h3>
-        <p>CPP trajectories are scored continuously against your reference batch &mdash; not reviewed after the run is already logged as a deviation.</p>
+        <p>CPP trajectories are scored continuously against your reference batch -- not reviewed after the run is already logged as a deviation.</p>
       </div>
       <div class="spec">
         <h3>Evidence, not a black-box score</h3>
@@ -188,15 +271,170 @@
       </div>
       <div class="spec">
         <h3>Six modules, one architecture</h3>
-        <p>CHO, E. coli, Bacillus, Yeast, Anaerobic, and Pichia &mdash; each with its own validated reference batch and organism-specific detection windows, all built on the same underlying engine.</p>
+        <p>CHO, E. coli, Bacillus, Yeast, Anaerobic, and Pichia -- each with its own validated reference batch and organism-specific detection windows, all built on the same underlying engine.</p>
+      </div>
+    </div>
+
+    <div id="company" class="company">
+      <div class="company-about">
+        <p class="section-label">Company</p>
+        <p>Kinetra Bio was built by a bioprocessing industry veteran with 30 years in the field -- including capital equipment, historian software, and process analytics at Thermo Fisher, GE Healthcare, Cytiva, and Getinge Applikon. The engine was designed by someone who has sat in the MSAT and Quality conversations where deviations are written, not just modeled them.</p>
+        <p>We are pre-revenue and taking founding deployments now. No installation fee for the first cohort.</p>
+      </div>
+      <div class="company-contact">
+        <h4>Get in touch</h4>
+        <a class="contact-link" href="mailto:Michael@Kinetrabio.com">
+          Michael@Kinetrabio.com
+          <span>Book a demo or pilot</span>
+        </a>
+        <a class="contact-link" href="mailto:Michael@Kinetrabio.com">
+          See it on your data
+          <span>Send us a historian export</span>
+        </a>
       </div>
     </div>
 
     <footer>
-      Runs on the historian and PAT infrastructure you already have. No new sensors, no new hardware.
+      Runs on the historian and PAT infrastructure you already have. No new sensors, no new hardware. &copy; 2026 Kinetra Bio.
     </footer>
 
   </div>
 </div>
+
+<script>
+const MODS = {
+  cho: {
+    label: 'CHO Fed-Batch',
+    livePts: '60,132 125,135 190,130 255,137 320,132 385,135 450,139 515,132 580,137 606,145 645,158 710,178 775,205 840,238',
+    flagX: 606, flagY: 145, flagHour: 84, endY: 238,
+    endLabel: 'h120 -- critical',
+    flagLabel: 'h84 -- divergence flagged',
+    status: 'validated',
+    desc: 'CHO Fed-Batch -- the most common mammalian expression system. Reference batch validated against mAb production runs. Detection windows tuned for dissolved oxygen sag, pH excursion, and glucose depletion trajectories characteristic of exponential-to-stationary transition.',
+    duration: '10-14 days (240-336 h). Chart shows a representative 120 h window.',
+    cpps: 'DO, pH, temperature, glucose, lactate, glutamine, osmolality, agitation, gassing rate.',
+    flag: 'Trajectory scored every 30 min against the reference envelope. First flag at h84 on DO sag and glucose slope deviation -- 36 h before the run would have crossed a hard spec limit.',
+    axis: ['0h','24h','48h','72h','96h','120h']
+  },
+  ecoli: {
+    label: 'E. coli Fed-Batch',
+    livePts: '60,134 130,131 200,128 270,133 330,130 390,135 440,138 490,132 540,130 570,138 620,150 680,168 755,192 840,222',
+    flagX: 570, flagY: 138, flagHour: 22, endY: 222,
+    endLabel: 'h36 -- critical',
+    flagLabel: 'h22 -- divergence flagged',
+    status: 'validated',
+    desc: 'E. coli Fed-Batch -- high-density fermentation for recombinant protein and enzyme production. Reference batch tuned for the rapid growth kinetics, acetate accumulation sensitivity, and DO cascade behavior typical of industrial E. coli runs.',
+    duration: '24-48 h (shorter runs, tighter windows). Chart shows a 36 h window.',
+    cpps: 'DO, pH, temperature, glucose, acetate, OD600 proxy, agitation, airflow.',
+    flag: 'First flag at h22 on acetate slope and DO step-change pattern -- 14 h before the run deviates from acceptable CQA range.',
+    axis: ['0h','6h','12h','18h','24h','36h']
+  },
+  bacillus: {
+    label: 'Bacillus Fed-Batch',
+    livePts: '60,133 120,130 190,128 260,135 320,133 380,136 440,140 500,134 555,136 590,143 640,153 700,166 770,184 840,208',
+    flagX: 590, flagY: 143, flagHour: 52, endY: 208,
+    endLabel: 'h72 -- risk',
+    flagLabel: 'h52 -- divergence flagged',
+    status: 'partial',
+    desc: 'Bacillus Fed-Batch -- enzyme and ag-biologics production (subtilis, amyloliquefaciens). Reference batch partially validated -- false-positive detection confirmed; true-positive dataset in progress via industrial enzyme producer collaboration.',
+    duration: '48-96 h. Chart shows a 72 h illustrative window.',
+    cpps: 'DO, pH, temperature, viscosity proxy, foam sensor, glucose, agitation.',
+    flag: 'Flag logic validated on false-positive scenarios. True-positive confirmation pending Novonesis dataset. Expected Q1 2027.',
+    axis: ['0h','12h','24h','36h','48h','72h']
+  },
+  yeast: {
+    label: 'Yeast Fed-Batch',
+    livePts: '60,133 120,131 185,129 250,136 315,132 380,136 445,140 510,134 565,138 600,146 645,156 705,170 770,188 840,212',
+    flagX: 600, flagY: 146, flagHour: 60, endY: 212,
+    endLabel: 'h96 -- risk',
+    flagLabel: 'h60 -- divergence flagged',
+    status: 'validated',
+    desc: 'Yeast Fed-Batch -- S. cerevisiae and K. phaffii (Pichia pastoris precursor) for ethanol, biofuel, and specialty metabolite production. Reference batch validated against industrial fermentation runs with carbon source switching events.',
+    duration: '48-120 h. Chart shows a 96 h window.',
+    cpps: 'DO, pH, temperature, ethanol, glucose, CO2 off-gas, RQ (respiratory quotient), agitation.',
+    flag: 'First flag at h60 on RQ drift and ethanol accumulation rate -- a signature of substrate overfeeding before it triggers growth inhibition.',
+    axis: ['0h','20h','40h','60h','80h','96h']
+  },
+  anaerobic: {
+    label: 'Anaerobic Fed-Batch',
+    livePts: '60,134 115,131 175,130 240,137 300,133 360,137 420,141 480,135 535,139 575,148 625,160 690,176 760,197 840,224',
+    flagX: 575, flagY: 148, flagHour: 56, endY: 224,
+    endLabel: 'h120 -- critical',
+    flagLabel: 'h56 -- divergence flagged',
+    status: 'validated',
+    desc: 'Anaerobic Fed-Batch -- obligate and facultative anaerobes for organic acid (lactic, succinic, butyric) and solvent (butanol) production. Reference batch validated for redox potential, N2 sparging behavior, and pH maintenance under high organic acid loads.',
+    duration: '72-120 h. Chart shows a 120 h window.',
+    cpps: 'pH, temperature, ORP (oxidation-reduction potential), N2 sparge rate, product titer proxy, glucose, agitation.',
+    flag: 'Flag at h56 on ORP drift and pH maintenance rate -- leading indicators of redox imbalance and product inhibition before titer plateau.',
+    axis: ['0h','24h','48h','72h','96h','120h']
+  },
+  pichia: {
+    label: 'Pichia Fed-Batch',
+    livePts: '60,132 120,135 185,130 250,137 315,132 380,136 445,140 510,133 568,138 610,147 652,160 712,180 775,204 840,235',
+    flagX: 610, flagY: 147, flagHour: 88, endY: 235,
+    endLabel: 'h120 -- critical',
+    flagLabel: 'h88 -- divergence flagged',
+    status: 'validated',
+    desc: 'Pichia pastoris (K. phaffii) Fed-Batch -- methanol-inducible expression for recombinant proteins, enzymes, and biopharmaceuticals. Reference batch validated for the two-phase run: glycerol batch/fed-batch growth phase followed by methanol induction and expression.',
+    duration: '96-168 h. Chart shows a 120 h window covering glycerol and methanol phases.',
+    cpps: 'DO, pH, temperature, methanol, glycerol, CO2 off-gas, agitation, induction timing.',
+    flag: 'Flag at h88 on methanol uptake rate deviation and DO response pattern -- indicates suboptimal induction kinetics before protein yield is compromised.',
+    axis: ['0h','24h','48h','72h','96h','120h']
+  }
+};
+
+const runLabel   = document.getElementById('console-run-label');
+const liveLine   = document.getElementById('live-line');
+const flagLine   = document.getElementById('flag-line');
+const flagDot    = document.getElementById('flag-dot');
+const flagLbl    = document.getElementById('flag-label');
+const endDot     = document.getElementById('end-dot');
+const endLbl     = document.getElementById('end-label');
+const axisLabels = document.getElementById('axis-labels');
+const mdStatus   = document.getElementById('md-status');
+const mdDesc     = document.getElementById('md-desc');
+const mdDuration = document.getElementById('md-duration');
+const mdCpps     = document.getElementById('md-cpps');
+const mdFlag     = document.getElementById('md-flag');
+const detail     = document.getElementById('module-detail');
+
+function setModule(key) {
+  const m = MODS[key];
+  if (!m) return;
+  runLabel.textContent = m.label;
+  liveLine.setAttribute('points', m.livePts);
+  flagLine.setAttribute('x1', m.flagX);
+  flagLine.setAttribute('x2', m.flagX);
+  flagLine.setAttribute('y1', m.flagY);
+  flagDot.setAttribute('cx', m.flagX);
+  flagDot.setAttribute('cy', m.flagY);
+  flagLbl.setAttribute('x', m.flagX + 8);
+  flagLbl.textContent = m.flagLabel;
+  endDot.setAttribute('cy', m.endY);
+  endLbl.setAttribute('y', m.endY - 10);
+  endLbl.textContent = m.endLabel;
+  endLbl.setAttribute('fill', m.endLabel.includes('critical') ? 'var(--critical)' : 'var(--risk)');
+  endDot.setAttribute('fill', m.endLabel.includes('critical') ? 'var(--critical)' : 'var(--risk)');
+  const texts = axisLabels.querySelectorAll('text');
+  m.axis.forEach((t, i) => { if (texts[i]) texts[i].textContent = t; });
+  mdStatus.textContent = m.status === 'validated' ? 'Validated' : 'Partially validated';
+  mdStatus.className = 'status ' + (m.status === 'validated' ? 'status-validated' : 'status-partial');
+  mdDesc.textContent = m.desc;
+  mdDuration.textContent = m.duration;
+  mdCpps.textContent = m.cpps;
+  mdFlag.textContent = m.flag;
+  detail.classList.add('visible');
+}
+
+document.querySelectorAll('.module').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.module').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setModule(btn.dataset.mod);
+  });
+});
+
+setModule('cho');
+</script>
 </body>
 </html>
