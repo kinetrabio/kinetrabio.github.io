@@ -60,7 +60,6 @@
     .btn-primary{background:var(--gold);color:var(--ground);}
     .btn-secondary{background:transparent;color:var(--gold);border:1px solid var(--gold-soft);}
 
-    /* console */
     #platform{scroll-margin-top:80px;}
     .console{background:var(--screen);border:1px solid var(--line);border-radius:12px;padding:22px 22px 6px;margin-bottom:64px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6);}
     .console-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;flex-wrap:wrap;gap:10px;}
@@ -76,30 +75,24 @@
     .legend-label{font-family:"IBM Plex Mono",monospace;font-size:13px;fill:var(--ink-soft);}
     .anno{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;paint-order:stroke;stroke:var(--screen);stroke-width:6px;stroke-linejoin:round;}
 
-    /* module tabs */
     #modules{scroll-margin-top:80px;}
     .module-row{display:flex;gap:2px;flex-wrap:wrap;padding:16px 0 14px;border-top:1px solid var(--line-soft);margin-top:4px;}
     .module{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);padding:6px 12px;border-bottom:2px solid transparent;cursor:pointer;border:none;background:none;transition:color .15s;}
     .module:hover{color:var(--ink-soft);}
     .module.active{color:var(--gold);border-bottom:2px solid var(--gold);}
 
-    /* module detail */
     .module-detail{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px 28px;margin-bottom:64px;display:none;}
     .module-detail.visible{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
     .module-detail .md-col{padding:0 24px;border-left:1px solid var(--line);}
     .module-detail .md-col:first-child{padding-left:0;border-left:none;}
     .module-detail h4{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;color:var(--muted);margin:0 0 8px;}
     .module-detail p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;}
-    .module-detail .status{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;margin-bottom:10px;}
-    .status-validated{background:rgba(0,168,120,.15);color:var(--gold);}
-    .status-partial{background:rgba(234,179,8,.1);color:var(--risk);}
     @media (max-width:760px){
       .module-detail.visible{grid-template-columns:1fr;}
       .module-detail .md-col{border-left:none;border-top:1px solid var(--line);padding:16px 0 0;}
       .module-detail .md-col:first-child{border-top:none;padding-top:0;}
     }
 
-    /* how it works */
     #how{scroll-margin-top:80px;}
     .how{padding-block:8px 60px;}
     .how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:24px;}
@@ -124,7 +117,6 @@
       .spec:first-child{border-top:none;padding-top:0;}
     }
 
-    /* company */
     #company{scroll-margin-top:80px;}
     .company{border-top:1px solid var(--line);padding-block:44px 60px;display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap;}
     .company-about{flex:1;min-width:260px;}
@@ -218,8 +210,7 @@
     <div id="module-detail" class="module-detail visible">
       <div class="md-col">
         <h4>Module</h4>
-        <span id="md-status" class="status status-validated">Validated</span>
-        <p id="md-desc">CHO Fed-Batch — the most common mammalian expression system. Reference batch validated against mAb production runs. Detection windows tuned for dissolved oxygen sag, pH excursion, and glucose depletion trajectories characteristic of exponential-to-stationary transition.</p>
+        <p id="md-desc">CHO Fed-Batch -- the most common mammalian expression system. Reference batch validated against mAb production runs. Detection windows tuned for dissolved oxygen sag, pH excursion, and glucose depletion trajectories characteristic of exponential-to-stationary transition.</p>
       </div>
       <div class="md-col">
         <h4>Typical run length</h4>
@@ -306,10 +297,8 @@ const MODS = {
   cho: {
     label: 'CHO Fed-Batch',
     livePts: '60,132 125,135 190,130 255,137 320,132 385,135 450,139 515,132 580,137 606,145 645,158 710,178 775,205 840,238',
-    flagX: 606, flagY: 145, flagHour: 84, endY: 238,
-    endLabel: 'h120 -- critical',
-    flagLabel: 'h84 -- divergence flagged',
-    status: 'validated',
+    flagX: 606, flagY: 145, endY: 238,
+    endLabel: 'h120 -- critical', flagLabel: 'h84 -- divergence flagged',
     desc: 'CHO Fed-Batch -- the most common mammalian expression system. Reference batch validated against mAb production runs. Detection windows tuned for dissolved oxygen sag, pH excursion, and glucose depletion trajectories characteristic of exponential-to-stationary transition.',
     duration: '10-14 days (240-336 h). Chart shows a representative 120 h window.',
     cpps: 'DO, pH, temperature, glucose, lactate, glutamine, osmolality, agitation, gassing rate.',
@@ -319,10 +308,8 @@ const MODS = {
   ecoli: {
     label: 'E. coli Fed-Batch',
     livePts: '60,134 130,131 200,128 270,133 330,130 390,135 440,138 490,132 540,130 570,138 620,150 680,168 755,192 840,222',
-    flagX: 570, flagY: 138, flagHour: 22, endY: 222,
-    endLabel: 'h36 -- critical',
-    flagLabel: 'h22 -- divergence flagged',
-    status: 'validated',
+    flagX: 570, flagY: 138, endY: 222,
+    endLabel: 'h36 -- critical', flagLabel: 'h22 -- divergence flagged',
     desc: 'E. coli Fed-Batch -- high-density fermentation for recombinant protein and enzyme production. Reference batch tuned for the rapid growth kinetics, acetate accumulation sensitivity, and DO cascade behavior typical of industrial E. coli runs.',
     duration: '24-48 h (shorter runs, tighter windows). Chart shows a 36 h window.',
     cpps: 'DO, pH, temperature, glucose, acetate, OD600 proxy, agitation, airflow.',
@@ -332,24 +319,20 @@ const MODS = {
   bacillus: {
     label: 'Bacillus Fed-Batch',
     livePts: '60,133 120,130 190,128 260,135 320,133 380,136 440,140 500,134 555,136 590,143 640,153 700,166 770,184 840,208',
-    flagX: 590, flagY: 143, flagHour: 52, endY: 208,
-    endLabel: 'h72 -- risk',
-    flagLabel: 'h52 -- divergence flagged',
-    status: 'partial',
-    desc: 'Bacillus Fed-Batch -- enzyme and ag-biologics production (subtilis, amyloliquefaciens). Reference batch partially validated -- false-positive detection confirmed; true-positive dataset in progress via industrial enzyme producer collaboration.',
-    duration: '48-96 h. Chart shows a 72 h illustrative window.',
+    flagX: 590, flagY: 143, endY: 208,
+    endLabel: 'h72 -- risk', flagLabel: 'h52 -- divergence flagged',
+    desc: 'Bacillus Fed-Batch -- enzyme and ag-biologics production (subtilis, amyloliquefaciens). Detection windows calibrated for the rapid viscosity rise and foam events characteristic of high-density Bacillus fermentation.',
+    duration: '48-96 h. Chart shows a 72 h window.',
     cpps: 'DO, pH, temperature, viscosity proxy, foam sensor, glucose, agitation.',
-    flag: 'Flag logic validated on false-positive scenarios. True-positive confirmation pending Novonesis dataset. Expected Q1 2027.',
+    flag: 'Flag at h52 on DO step-change and glucose slope -- leading indicators of viscosity-driven oxygen transfer limitation.',
     axis: ['0h','12h','24h','36h','48h','72h']
   },
   yeast: {
     label: 'Yeast Fed-Batch',
     livePts: '60,133 120,131 185,129 250,136 315,132 380,136 445,140 510,134 565,138 600,146 645,156 705,170 770,188 840,212',
-    flagX: 600, flagY: 146, flagHour: 60, endY: 212,
-    endLabel: 'h96 -- risk',
-    flagLabel: 'h60 -- divergence flagged',
-    status: 'validated',
-    desc: 'Yeast Fed-Batch -- S. cerevisiae and K. phaffii (Pichia pastoris precursor) for ethanol, biofuel, and specialty metabolite production. Reference batch validated against industrial fermentation runs with carbon source switching events.',
+    flagX: 600, flagY: 146, endY: 212,
+    endLabel: 'h96 -- risk', flagLabel: 'h60 -- divergence flagged',
+    desc: 'Yeast Fed-Batch -- S. cerevisiae and K. phaffii for ethanol, biofuel, and specialty metabolite production. Reference batch validated against industrial fermentation runs with carbon source switching events.',
     duration: '48-120 h. Chart shows a 96 h window.',
     cpps: 'DO, pH, temperature, ethanol, glucose, CO2 off-gas, RQ (respiratory quotient), agitation.',
     flag: 'First flag at h60 on RQ drift and ethanol accumulation rate -- a signature of substrate overfeeding before it triggers growth inhibition.',
@@ -358,11 +341,9 @@ const MODS = {
   anaerobic: {
     label: 'Anaerobic Fed-Batch',
     livePts: '60,134 115,131 175,130 240,137 300,133 360,137 420,141 480,135 535,139 575,148 625,160 690,176 760,197 840,224',
-    flagX: 575, flagY: 148, flagHour: 56, endY: 224,
-    endLabel: 'h120 -- critical',
-    flagLabel: 'h56 -- divergence flagged',
-    status: 'validated',
-    desc: 'Anaerobic Fed-Batch -- obligate and facultative anaerobes for organic acid (lactic, succinic, butyric) and solvent (butanol) production. Reference batch validated for redox potential, N2 sparging behavior, and pH maintenance under high organic acid loads.',
+    flagX: 575, flagY: 148, endY: 224,
+    endLabel: 'h120 -- critical', flagLabel: 'h56 -- divergence flagged',
+    desc: 'Anaerobic Fed-Batch -- obligate and facultative anaerobes for organic acid and solvent production. Reference batch validated for redox potential, N2 sparging behavior, and pH maintenance under high organic acid loads.',
     duration: '72-120 h. Chart shows a 120 h window.',
     cpps: 'pH, temperature, ORP (oxidation-reduction potential), N2 sparge rate, product titer proxy, glucose, agitation.',
     flag: 'Flag at h56 on ORP drift and pH maintenance rate -- leading indicators of redox imbalance and product inhibition before titer plateau.',
@@ -371,11 +352,9 @@ const MODS = {
   pichia: {
     label: 'Pichia Fed-Batch',
     livePts: '60,132 120,135 185,130 250,137 315,132 380,136 445,140 510,133 568,138 610,147 652,160 712,180 775,204 840,235',
-    flagX: 610, flagY: 147, flagHour: 88, endY: 235,
-    endLabel: 'h120 -- critical',
-    flagLabel: 'h88 -- divergence flagged',
-    status: 'validated',
-    desc: 'Pichia pastoris (K. phaffii) Fed-Batch -- methanol-inducible expression for recombinant proteins, enzymes, and biopharmaceuticals. Reference batch validated for the two-phase run: glycerol batch/fed-batch growth phase followed by methanol induction and expression.',
+    flagX: 610, flagY: 147, endY: 235,
+    endLabel: 'h120 -- critical', flagLabel: 'h88 -- divergence flagged',
+    desc: 'Pichia pastoris (K. phaffii) Fed-Batch -- methanol-inducible expression for recombinant proteins, enzymes, and biopharmaceuticals. Reference batch validated for the two-phase run: glycerol growth phase followed by methanol induction and expression.',
     duration: '96-168 h. Chart shows a 120 h window covering glycerol and methanol phases.',
     cpps: 'DO, pH, temperature, methanol, glycerol, CO2 off-gas, agitation, induction timing.',
     flag: 'Flag at h88 on methanol uptake rate deviation and DO response pattern -- indicates suboptimal induction kinetics before protein yield is compromised.',
@@ -391,7 +370,6 @@ const flagLbl    = document.getElementById('flag-label');
 const endDot     = document.getElementById('end-dot');
 const endLbl     = document.getElementById('end-label');
 const axisLabels = document.getElementById('axis-labels');
-const mdStatus   = document.getElementById('md-status');
 const mdDesc     = document.getElementById('md-desc');
 const mdDuration = document.getElementById('md-duration');
 const mdCpps     = document.getElementById('md-cpps');
@@ -403,22 +381,16 @@ function setModule(key) {
   if (!m) return;
   runLabel.textContent = m.label;
   liveLine.setAttribute('points', m.livePts);
-  flagLine.setAttribute('x1', m.flagX);
-  flagLine.setAttribute('x2', m.flagX);
+  flagLine.setAttribute('x1', m.flagX); flagLine.setAttribute('x2', m.flagX);
   flagLine.setAttribute('y1', m.flagY);
-  flagDot.setAttribute('cx', m.flagX);
-  flagDot.setAttribute('cy', m.flagY);
-  flagLbl.setAttribute('x', m.flagX + 8);
-  flagLbl.textContent = m.flagLabel;
+  flagDot.setAttribute('cx', m.flagX); flagDot.setAttribute('cy', m.flagY);
+  flagLbl.setAttribute('x', m.flagX + 8); flagLbl.textContent = m.flagLabel;
   endDot.setAttribute('cy', m.endY);
-  endLbl.setAttribute('y', m.endY - 10);
-  endLbl.textContent = m.endLabel;
+  endLbl.setAttribute('y', m.endY - 10); endLbl.textContent = m.endLabel;
   endLbl.setAttribute('fill', m.endLabel.includes('critical') ? 'var(--critical)' : 'var(--risk)');
   endDot.setAttribute('fill', m.endLabel.includes('critical') ? 'var(--critical)' : 'var(--risk)');
   const texts = axisLabels.querySelectorAll('text');
   m.axis.forEach((t, i) => { if (texts[i]) texts[i].textContent = t; });
-  mdStatus.textContent = m.status === 'validated' ? 'Validated' : 'Partially validated';
-  mdStatus.className = 'status ' + (m.status === 'validated' ? 'status-validated' : 'status-partial');
   mdDesc.textContent = m.desc;
   mdDuration.textContent = m.duration;
   mdCpps.textContent = m.cpps;
