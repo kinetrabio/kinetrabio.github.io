@@ -1366,8 +1366,22 @@ function calcBayesian(orgId, data, golden, params, alerts, divHour, archive) {
   // Step 3 — Posterior = normalize likelihood x prior
   // Using simplified Bayesian update: posterior = (likelihood x prior) / ((likelihood x prior) + (1-prior))
   const posterior = (likelihood * baseline) / ((likelihood * baseline) + (1 - baseline));
-  const posteriorPct = Math.min(99, Math.round(posterior * 100));
+  let posteriorPct = Math.min(99, Math.round(posterior * 100));
   const baselinePct = Math.round(baseline * 100);
+
+  // Viability floor — CHO
+  // <70% viability is a harvest-disqualifying event in CHO fed-batch.
+  // The Bayesian model is constrained by the MAX_LIKELIHOOD cap and the CHO
+  // baseline prior, which together limit the posterior to ~57% at terminal stage
+  // even with maximum evidence. A CRITICAL viability reading must not return a
+  // YELLOW PDI — that credibility gap erodes trust in the instrument.
+  // Post-Bayesian override: floor the PDI to CRITICAL band when viability is <70%.
+  if (orgId === "cho" && last.viability_percent != null && !isNaN(last.viability_percent) && last.viability_percent < 70) {
+    if (posteriorPct < 70) {
+      posteriorPct = 70;
+      evidence.push("PDI floor applied — viability <70% is harvest-disqualifying in CHO fed-batch; composite risk floored to CRITICAL regardless of other parameter states");
+    }
+  }
 
   // Step 4 — Determine risk level from posterior
   const riskLevel = posteriorPct >= 70 ? "CRITICAL" : posteriorPct >= 40 ? "ELEVATED" : posteriorPct >= 25 ? "MODERATE" : "NOMINAL";
