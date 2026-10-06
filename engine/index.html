@@ -1369,17 +1369,40 @@ function calcBayesian(orgId, data, golden, params, alerts, divHour, archive) {
   let posteriorPct = Math.min(99, Math.round(posterior * 100));
   const baselinePct = Math.round(baseline * 100);
 
-  // Viability floor — CHO
-  // <70% viability is a harvest-disqualifying event in CHO fed-batch.
-  // The Bayesian model is constrained by the MAX_LIKELIHOOD cap and the CHO
-  // baseline prior, which together limit the posterior to ~57% at terminal stage
-  // even with maximum evidence. A CRITICAL viability reading must not return a
-  // YELLOW PDI — that credibility gap erodes trust in the instrument.
-  // Post-Bayesian override: floor the PDI to CRITICAL band when viability is <70%.
-  if (orgId === "cho" && last.viability_percent != null && !isNaN(last.viability_percent) && last.viability_percent < 70) {
-    if (posteriorPct < 70) {
+  // Viability floor — post-Bayesian override for all modules that track viability_percent
+  // When viability falls into the CRITICAL band, the PDI must reflect harvest-disqualifying
+  // risk. The MAX_LIKELIHOOD cap interacts with per-organism baseline priors to impose a
+  // mathematical ceiling on the posterior that can prevent it from reaching the CRITICAL tier
+  // (≥70%) even with overwhelming evidence. Example: CHO terminal prior (0.10) × cap (12.0)
+  // yields a maximum posterior of 57%; anaerobic and CAR-T terminal (prior 0.12) cap at 62%.
+  // This override floors PDI to CRITICAL whenever viability crosses the organism-specific
+  // critical threshold, eliminating the credibility gap between instrument display and
+  // observed culture state. Pichia is excluded — that module does not track viability_percent.
+  if (last.viability_percent != null && !isNaN(last.viability_percent)) {
+    let viabFloor = false;
+    let viabText = "";
+    if (orgId === "cho" && last.viability_percent < 70) {
+      viabFloor = true;
+      viabText = "PDI floor applied — viability <70% is harvest-disqualifying in CHO fed-batch; composite risk floored to CRITICAL regardless of other parameter states";
+    } else if (orgId === "ecoli" && last.viability_percent < 75) {
+      viabFloor = true;
+      viabText = "PDI floor applied — viability <75% in E. coli indicates significant cell stress or lysis event; composite risk floored to CRITICAL";
+    } else if (orgId === "bacillus" && last.viability_percent < 75) {
+      viabFloor = true;
+      viabText = "PDI floor applied — viability <75% in Bacillus indicates sporulation pressure or acute culture stress; composite risk floored to CRITICAL";
+    } else if (orgId === "yeast" && last.viability_percent < 75) {
+      viabFloor = true;
+      viabText = "PDI floor applied — viability <75% in yeast indicates ethanol toxicity or acute nutrient depletion; composite risk floored to CRITICAL";
+    } else if (orgId === "anaerobic" && last.viability_percent < 70) {
+      viabFloor = true;
+      viabText = "PDI floor applied — viability <70% in anaerobic culture indicates oxygen intrusion, substrate toxicity, or culture collapse; composite risk floored to CRITICAL";
+    } else if (orgId === "cart" && last.viability_percent < 70) {
+      viabFloor = true;
+      viabText = "PDI floor applied — viability <70% during CAR-T expansion is a critical manufacturing failure; composite risk floored to CRITICAL";
+    }
+    if (viabFloor && posteriorPct < 70) {
       posteriorPct = 70;
-      evidence.push("PDI floor applied — viability <70% is harvest-disqualifying in CHO fed-batch; composite risk floored to CRITICAL regardless of other parameter states");
+      evidence.push(viabText);
     }
   }
 
